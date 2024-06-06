@@ -46,12 +46,12 @@ class OpenRouterDriver
 
     private function client(): OpenAI\Client
     {
-        $this->token ??= config('openai.api_key');
+        $this->token ??= config('llm.open_router.api_key');
 
         return OpenAI::factory()
             ->withApiKey($this->token)
             ->withBaseUri('https://openrouter.ai/api/v1')
-            ->withHttpClient(new Client(['timeout' => config('openai.request_timeout', 30)]))
+            ->withHttpClient(new Client(['timeout' => config('llm.request_timeout', 30)]))
             ->make();
     }
 

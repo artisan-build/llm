@@ -52,15 +52,16 @@ class AzureDriver
 
     private function client(): OpenAI\Client
     {
-        $this->token ??= config('azure.api_key');
-        $this->resource ??= config('azure.resource_id');
-        $this->version ??= config('azure.version');
-        $this->deployment ??= config('azure.deployment');
+        $this->token ??= config('llm.azure.api_key');
+        $this->resource ??= config('llm.azure.resource_id');
+        $this->version ??= config('llm.azure.version');
+        $this->deployment ??= config('llm.azure.deployment');
 
         return OpenAI::factory()
             ->withBaseUri("{$this->resource}.openai.azure.com/openai/deployments/{$this->deployment}")
             ->withHttpHeader('api-key', $this->token)
             ->withQueryParam('api-version', $this->version)
+            ->withHttpClient(new Client(['timeout' => config('llm.request_timeout', 30)]))
             ->make();
     }
 

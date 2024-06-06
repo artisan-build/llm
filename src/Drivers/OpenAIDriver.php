@@ -48,14 +48,14 @@ class OpenAIDriver
 
     private function client(): OpenAI\Client
     {
-        $this->token ??= config('openai.api_key');
-        $this->organization ??= config('openai.organization');
+        $this->token ??= config('llm.openai.api_key');
+        $this->organization ??= config('llm.openai.organization');
 
         return OpenAI::factory()
             ->withApiKey($this->token)
             ->withOrganization($this->organization)
             ->withHttpHeader('OpenAI-Beta', 'assistants=v2')
-            ->withHttpClient(new Client(['timeout' => config('openai.request_timeout', 30)]))
+            ->withHttpClient(new Client(['timeout' => config('llm.request_timeout', 30)]))
             ->make();
     }
 

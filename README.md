@@ -5,15 +5,21 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/artisan-build/llm/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/artisan-build/llm/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/artisan-build/llm.svg?style=flat-square)](https://packagist.org/packages/artisan-build/llm)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+First of all, I want to acknowledge the amazing work that Nuno and Sandro have done managing the openai-php projects
+including the Laravel wrapper that this package replaces for us. We wrote this package to meet a few specific needs:
+
+1. We need to allow users to bring their own keys and the way the client is created in the openai-php/laravel package makes that impossible.
+2. We wanted to add hooks before the request is made and after the response is received.
+3. We wanted to simplify the use of Azure and OpenRouter.ai
+
+If none of those apply to you, then the openai-php/laravel package is a great choice, and you'll get no additional 
+benefit from using this instead.
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/llm.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/llm)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+You can support our open-source work by sponsoring [Len Woodward](https://github.com/sponsors/ProjektGopher). Since 
+Ed lives in Europe where taxes are a bit more complicated, he doesn't participate in the sponsorship program, but you
+are welcome to buy him a beer if you see him at a conference.
 
 ## Installation
 
@@ -23,12 +29,6 @@ You can install the package via composer:
 composer require artisan-build/llm
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="llm-migrations"
-php artisan migrate
-```
 
 You can publish the config file with:
 
@@ -40,21 +40,26 @@ This is the contents of the published config file:
 
 ```php
 return [
-];
+    'azure' => [
+        'deployment_id' => env('AZURE_DEPLOYMENT_ID'),
+        'resource_id' => env('AZURE_RESOURCE_ID'),
+        'version' => env('AZURE_VERSION'),
+    ],
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+        'organization' => env('OPENAI_ORGANIZATION'),
+    ],
+    'openrouter' => [
+        'api_key' => env('OPEN_ROUTER_API_KEY'),
+    ],
+    'request_timeout' => env('OPENAI_REQUEST_TIMEOUT', 30),
+]
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="llm-views"
-```
 
 ## Usage
 
-```php
-$llm = new ArtisanBuild\Llm();
-echo $llm->echoPhrase('Hello, ArtisanBuild!');
-```
+For the full documentation, please visit [our documentation site](https://artisan.build/docs/llm)
 
 ## Testing
 
@@ -77,6 +82,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Ed Grosvenor](https://github.com/edgrosvenor)
+- [Len Woodward](https://github.com/projektgopher)
 - [All Contributors](../../contributors)
 
 ## License
