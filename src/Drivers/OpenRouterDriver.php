@@ -47,7 +47,6 @@ class OpenRouterDriver
     private function client(): OpenAI\Client
     {
         $this->token ??= config('openai.api_key');
-        $this->organization ??= config('openai.organization');
 
         return OpenAI::factory()
             ->withApiKey($this->token)
