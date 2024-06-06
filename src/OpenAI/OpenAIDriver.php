@@ -11,16 +11,19 @@ class OpenAIDriver
     use HasLifecycleHooks;
 
     protected ?string $token = null;
+
     protected ?string $organization = null;
+
     protected ?string $api = null;
+
     protected array $payload = [];
 
     public function chat(): static
     {
         $this->api = 'chat';
+
         return $this;
     }
-
 
     public function create(array $payload)
     {
@@ -34,13 +37,13 @@ class OpenAIDriver
 
         return $response;
 
-
     }
 
     private function client(): OpenAI\Client
     {
         $this->token ??= config('openai.api_key');
         $this->organization ??= config('openai.organization');
+
         return OpenAI::factory()
             ->withApiKey($this->token)
             ->withOrganization($this->organization)
@@ -52,12 +55,14 @@ class OpenAIDriver
     public function token(string $token): static
     {
         $this->token = $token;
+
         return $this;
     }
 
     public function organization(string $organization): static
     {
         $this->organization = null;
+
         return $this;
     }
 }

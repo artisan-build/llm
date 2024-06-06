@@ -2,9 +2,9 @@
 
 namespace ArtisanBuild\Llm\Tests;
 
+use ArtisanBuild\Llm\LlmServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ArtisanBuild\Llm\LlmServiceProvider;
 
 class TestCase extends Orchestra
 {
