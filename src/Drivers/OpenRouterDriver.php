@@ -1,19 +1,17 @@
 <?php
 
-namespace ArtisanBuild\Llm\OpenAI;
+namespace ArtisanBuild\Llm\Drivers;
 
 use ArtisanBuild\Llm\Traits\HasLifecycleHooks;
 use GuzzleHttp\Client;
 use OpenAI;
 use OpenAI\Contracts\ResponseContract;
 
-class OpenAIDriver
+class OpenRouterDriver
 {
     use HasLifecycleHooks;
 
     protected ?string $token = null;
-
-    protected ?string $organization = null;
 
     protected ?string $api = null;
 
@@ -53,8 +51,7 @@ class OpenAIDriver
 
         return OpenAI::factory()
             ->withApiKey($this->token)
-            ->withOrganization($this->organization)
-            ->withHttpHeader('OpenAI-Beta', 'assistants=v2')
+            ->withBaseUri('https://openrouter.ai/api/v1')
             ->withHttpClient(new Client(['timeout' => config('openai.request_timeout', 30)]))
             ->make();
     }
@@ -66,10 +63,4 @@ class OpenAIDriver
         return $this;
     }
 
-    public function organization(string $organization): static
-    {
-        $this->organization = null;
-
-        return $this;
-    }
 }

@@ -2,7 +2,7 @@
 
 namespace ArtisanBuild\Llm\Facades;
 
-use ArtisanBuild\Llm\OpenAI\OpenAIDriver;
+use ArtisanBuild\Llm\Drivers\OpenAIDriver;
 use Illuminate\Support\Facades\Facade;
 
 class OpenAI extends Facade
