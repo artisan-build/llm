@@ -5,6 +5,7 @@ namespace ArtisanBuild\Llm\OpenAI;
 use ArtisanBuild\Llm\Traits\HasLifecycleHooks;
 use GuzzleHttp\Client;
 use OpenAI;
+use OpenAI\Contracts\ResponseContract;
 
 class OpenAIDriver
 {
@@ -18,12 +19,18 @@ class OpenAIDriver
 
     protected array $payload = [];
 
-    public function chat(): static
-    {
-        $this->api = 'chat';
+    // It's bad enough they marked all classes final. Marking contracts internal is painful.
+    protected ?ResponseContract $response = null;
 
-        return $this;
+    public function __call(string $name, array $arguments = []): static
+    {
+        if (method_exists(OpenAI\Client::class, $name)) {
+            $this->api = $name;
+            return $this;
+        }
+        throw new \RuntimeException("The method {$name} does not exist in the OpenAI client");
     }
+
 
     public function create(array $payload)
     {
@@ -31,11 +38,11 @@ class OpenAIDriver
 
         $this->runHook('on_before_prompt');
 
-        $response = $this->client()->{$this->api}()->create($payload);
+        $this->response = $this->client()->{$this->api}()->create($this->payload);
 
         $this->runHook('on_after_prompt');
 
-        return $response;
+        return $this->response;
 
     }
 
